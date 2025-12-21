@@ -1,0 +1,16 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: product-service
+  data:
+    mongodb:
+      # make sure to set up the env for username and password
+      uri: mongodb://${MONGO_USER:admin}:${MONGO_PASSWORD:password}@localhost:27017/product_db?authSource=admin
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+

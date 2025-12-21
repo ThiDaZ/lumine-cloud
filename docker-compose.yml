@@ -1,0 +1,62 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: lumine-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=lumine_db
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - lumine-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  mongodb:
+    image: mongo:7.0
+    container_name: lumine-mongo
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=password
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - lumine-net
+
+  redis:
+    image: redis:alpine
+    container_name: lumine-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - lumine-net
+    command: redis-server --appendonly yes
+
+  zipkin:
+    image: openzipkin/zipkin
+    container_name: lumine-zipkin
+    ports:
+      - "9411:9411"
+    networks:
+      - lumine-net
+
+volumes:
+  postgres-data:
+  mongo-data:
+  redis-data:
+
+networks:
+  lumine-net:
+    driver: bridge
