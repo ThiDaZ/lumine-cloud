@@ -28,6 +28,7 @@
     <modules>
         <module>discovery-service</module>
         <module>api-gateway</module>
+        <module>product-service</module>
     </modules>
 
     <dependencyManagement>
