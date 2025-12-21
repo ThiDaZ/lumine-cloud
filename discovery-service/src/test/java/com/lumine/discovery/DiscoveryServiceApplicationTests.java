@@ -1,4 +1,4 @@
-package com.thidas.discovery;
+package com.lumine.discovery;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

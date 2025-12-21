@@ -1,4 +1,4 @@
-package com.thidas.discovery;
+package com.lumine.discovery;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
