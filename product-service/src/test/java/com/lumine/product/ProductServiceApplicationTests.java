@@ -2,6 +2,7 @@ package com.lumine.product;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lumine.product.dto.ProductRequest;
+import com.lumine.product.model.Product;
 import com.lumine.product.repository.ProductRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -19,6 +20,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.math.BigDecimal;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -47,6 +49,9 @@ class ProductServiceApplicationTests {
         registry.add("spring.data.mongodb.uri", mongoDBContainer::getReplicaSetUrl);
     }
 
+    /**
+     * Test create a new product
+     */
     @Test
     void shouldCreateProduct() throws Exception {
         ProductRequest productRequest = getProductRequest();
@@ -59,6 +64,26 @@ class ProductServiceApplicationTests {
                 .andExpect(status().isCreated()); // Assert 201 Created
 
         Assertions.assertEquals(1, productRepository.findAll().size());
+    }
+
+    /**
+     * Tests retrieval of all products
+     */
+    @Test
+    void shouldGetProductAllProduct() throws Exception {
+
+        Product product = Product.builder()
+                .name("iPhone 15")
+                .description("Apple Smartphone")
+                .price(BigDecimal.valueOf(1200))
+                .build();
+        productRepository.save(product);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/products")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(1));
+
     }
 
     private ProductRequest getProductRequest() {
