@@ -83,6 +83,24 @@ class ProductServiceApplicationTests {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(1));
+    }
+
+    @Test
+    void shouldGetProductById() throws Exception {
+
+        Product product = Product.builder()
+                .id("pr001")
+                .name("iPhone 15")
+                .description("Apple Smartphone")
+                .price(BigDecimal.valueOf(1200))
+                .build();
+        productRepository.save(product);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/products/pr001")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value("pr001"))
+                .andExpect(jsonPath("$.name").value("iPhone 15"));
 
     }
 
