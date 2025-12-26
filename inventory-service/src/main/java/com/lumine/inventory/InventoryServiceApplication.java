@@ -1,13 +1,39 @@
 package com.lumine.inventory;
 
+import com.lumine.inventory.model.Inventory;
+import com.lumine.inventory.repository.InventoryRepository;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 public class InventoryServiceApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(InventoryServiceApplication.class, args);
+    }
+
+    //Load Dummy data on startup
+    @Bean
+    public CommandLineRunner loadData(InventoryRepository inventoryRepository){
+        return args -> {
+            if(inventoryRepository.count() == 0){
+                Inventory inventory1 = new Inventory();
+                inventory1.setSkuCode("iphone_15");
+                inventory1.setQuantity(100);
+
+                Inventory inventory2 = new Inventory();
+                inventory2.setSkuCode("galaxy_s24");
+                inventory2.setQuantity(0);
+
+                inventoryRepository.save(inventory1);
+                inventoryRepository.save(inventory2);
+
+                System.out.println("Sample data loaded!");
+
+            }
+        };
     }
 
 }
