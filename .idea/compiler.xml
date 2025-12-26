@@ -8,8 +8,18 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="api-gateway" />
-        <module name="product-service" />
         <module name="discovery-service" />
+        <module name="inventory-service" />
+      </profile>
+      <profile name="Annotation profile for lumine-cloud" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.42/lombok-1.18.42.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.42/lombok-1.18.42.jar" />
+        </processorPath>
+        <module name="product-service" />
       </profile>
     </annotationProcessing>
   </component>
@@ -17,6 +27,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="api-gateway" options="-parameters" />
       <module name="discovery-service" options="-parameters" />
+      <module name="inventory-service" options="-parameters" />
       <module name="product-service" options="-parameters" />
     </option>
   </component>
