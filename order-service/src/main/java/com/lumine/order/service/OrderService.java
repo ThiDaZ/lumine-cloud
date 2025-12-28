@@ -6,6 +6,7 @@ import com.lumine.order.dto.OrderRequest;
 import com.lumine.order.model.Order;
 import com.lumine.order.model.OrderLineItems;
 import com.lumine.order.repository.OrderRepository;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -26,8 +27,8 @@ public class OrderService {
     /**
      * Places order if all products are in stock
      */
-    public void placeOrder(OrderRequest orderRequest){
-
+    @CircuitBreaker(name = "inventory", fallbackMethod = "fallbackMethod")
+    public String placeOrder(OrderRequest orderRequest){
         Order order = new Order();
         order.setOrderNumber(UUID.randomUUID().toString());
 
@@ -43,11 +44,19 @@ public class OrderService {
 
         if(allProductsInStock){
             orderRepository.save(order);
-            log.info("Order placed Successfully");
+            return "Order placed Successfully";
         }else{
             throw new IllegalArgumentException("Product is not in stock, please try again later");
         }
 
+    }
+
+    /**
+     * This method runs if the inventory service is down
+     */
+    public String fallbackMethod(OrderRequest orderRequest, RuntimeException runtimeException){
+        log.error("Cannot place order executing fallback logic");
+        return "Oops! Something went wrong, please order after some time!";
     }
 
     private OrderLineItems mapToDto(OrderLineItemsDto orderLineItemsDto){
