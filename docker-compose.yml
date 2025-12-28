@@ -52,6 +52,18 @@ services:
     networks:
       - lumine-net
 
+  keycloak:
+    image: quay.io/keycloak/keycloak:24.0.1
+    container_name: lumine-keycloak
+    command: start-dev
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    ports:
+     - "8181:8080"
+    networks:
+     - lumine-net
+
 volumes:
   postgres-data:
   mongo-data:
