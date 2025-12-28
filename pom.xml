@@ -30,6 +30,7 @@
         <module>api-gateway</module>
         <module>product-service</module>
         <module>inventory-service</module>
+        <module>order-service</module>
     </modules>
 
     <dependencyManagement>
