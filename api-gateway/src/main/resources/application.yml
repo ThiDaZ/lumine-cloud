@@ -4,6 +4,12 @@ server:
 spring:
   application:
     name: api-gateway
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          # the url where gateway checks if the token signature is real
+          issuer-uri: http://localhost:8181/realms/lumine-realm
   cloud:
     gateway:
       server:
@@ -12,6 +18,34 @@ spring:
             locator:
               lower-case-service-id: true
               enabled: true
+
+          routes:
+            - id: product-service
+              uri: lb://product-service
+              predicates:
+                - Path=/product-service/**
+
+            - id: order-service
+              uri: lb://order-service
+              predicates:
+                - Path=/order-service/**
+
+            - id: inventory-service
+              uri: lb://inventory-service
+              predicates:
+                - Path=/inventory-service/**
+
+            - id: discovery-server
+              uri: http://localhost:8761
+              predicates:
+                - Path=/eureka/web
+              filters:
+                - SetPath=/
+
+            - id: discovery-server-static
+              uri: http://localhost:8761
+              predicates:
+                - Path=/eureka/**
 
 eureka:
   client:
