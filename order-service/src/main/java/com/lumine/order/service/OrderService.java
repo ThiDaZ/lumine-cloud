@@ -3,12 +3,14 @@ package com.lumine.order.service;
 import com.lumine.order.client.InventoryClient;
 import com.lumine.order.dto.OrderLineItemsDto;
 import com.lumine.order.dto.OrderRequest;
+import com.lumine.order.event.OrderPlacedEvent;
 import com.lumine.order.model.Order;
 import com.lumine.order.model.OrderLineItems;
 import com.lumine.order.repository.OrderRepository;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +25,7 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
     private final InventoryClient inventoryClient;
+    private final KafkaTemplate<String, OrderPlacedEvent> kafkaTemplate;
 
     /**
      * Places order if all products are in stock
@@ -42,8 +45,13 @@ public class OrderService {
         boolean allProductsInStock = order.getOrderLineItemsList().stream()
                 .allMatch(item -> inventoryClient.checkStock(item.getSkuCode()));
 
+        // persists order and sends notification if all products in stock
         if(allProductsInStock){
             orderRepository.save(order);
+
+            kafkaTemplate.send("notificationTopic", new OrderPlacedEvent(order.getOrderNumber()));
+            log.info("Notification Sent for Order{}", order.getOrderNumber());
+
             return "Order placed Successfully";
         }else{
             throw new IllegalArgumentException("Product is not in stock, please try again later");

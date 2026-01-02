@@ -4,6 +4,15 @@ server:
 spring:
   application:
     name: order-service
+  kafka: # kafka configuration
+    bootstrap-servers: localhost:9092
+    template:
+      default-topic: notificationTopic
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring.json.add.type.headers: false # helps to avoid package name conflicts
   datasource:
     url: jdbc:postgresql://localhost:5432/lumine_db
     username: ${POSTGRES_USER}
