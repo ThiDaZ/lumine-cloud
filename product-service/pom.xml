@@ -77,6 +77,19 @@
                     </excludes>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <version>3.4.1</version>
+                <configuration>
+                    <from>
+                        <image>amazoncorretto:21</image>
+                    </from>
+                    <to>
+                        <image>lumine/product-service</image>
+                    </to>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
