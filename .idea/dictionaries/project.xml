@@ -2,6 +2,7 @@
   <dictionary name="project">
     <words>
       <w>circuitbreaker</w>
+      <w>kafka</w>
     </words>
   </dictionary>
 </component>
