@@ -1,0 +1,41 @@
+# 1. THE DEPLOYMENT (The App itself)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: discovery-service
+  labels:
+    app: discovery-service
+spec:
+  replicas: 1 # Run 1 copy
+  selector:
+    matchLabels:
+      app: discovery-service
+  template:
+    metadata:
+      labels:
+        app: discovery-service
+    spec:
+      containers:
+        - name: discovery-service
+          image: lumine/discovery-service # image of discovery service
+          imagePullPolicy: IfNotPresent # use local image if available
+          ports:
+            - containerPort: 8761
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: default
+
+---
+# 2. THE SERVICE (The Network Access)
+apiVersion: v1
+kind: Service
+metadata:
+  name: discovery-service
+spec:
+  selector:
+    app: discovery-service
+  type: LoadBalancer # exposes it to localhost
+  ports:
+    - protocol: TCP
+      port: 8761
+      targetPort: 8761
