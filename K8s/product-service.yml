@@ -28,6 +28,10 @@ spec:
             - name: MANAGEMENT_ZIPKIN_TRACING_ENDPOINT
               value: http://zipkin:9411/api/v2/spans
 
+            # 500, magic fix for spring cloud kubernetes
+            - name: EUREKA_INSTANCE_PREFER_IP_ADDRESS
+              value: "true"
+
 ---
 apiVersion: v1
 kind: Service
