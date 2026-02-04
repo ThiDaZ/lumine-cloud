@@ -22,7 +22,7 @@ The system follows a domain-driven microservices architecture. Services communic
 | **User Service**         | Keycloak | IAM, OIDC authentication, and user management. |
 | **Product Service**      | MongoDB | Manages product catalog (NoSQL storage). |
 | **Order Service**        | PostgreSQL | Handles order placement and transaction logic. |
-| **Inventory Service**    | PostgreSQL/MySQL | Tracks stock levels. |
+| **Inventory Service**    | PostgreSQL | Tracks stock levels. |
 | **Notification Service** | Kafka Consumer | Listens for events and sends emails (simulated). |
 | **Discovery Service**    | Netflix Eureka | Service registry and client-side load balancing. |
 
