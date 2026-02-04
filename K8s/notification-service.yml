@@ -26,7 +26,8 @@ spec:
               value: http://discovery-service:8761/eureka/
             - name: MANAGEMENT_ZIPKIN_TRACING_ENDPOINT
               value: http://zipkin:9411/api/v2/spans
-
+            - name: MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE
+              value: "prometheus,health,info,metrics"
 ---
 apiVersion: v1
 kind: Service

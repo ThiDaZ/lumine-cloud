@@ -31,6 +31,8 @@ spec:
             # 500, magic fix for spring cloud kubernetes
             - name: EUREKA_INSTANCE_PREFER_IP_ADDRESS
               value: "true"
+            - name: MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE
+              value: "prometheus,health,info,metrics"
 
 ---
 apiVersion: v1
