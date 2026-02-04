@@ -24,6 +24,15 @@ spec:
               value: admin
             - name: POSTGRES_PASSWORD
               value: password
+            - name: PGDATA
+              value: "/var/lib/postgresql/data/pgdata"
+          volumeMounts: # mount the storage here
+            - name: postgres-storage
+              mountPath: /var/lib/postgresql/data
+      volumes: # connect the claim to the pod
+        - name: postgres-storage
+          persistentVolumeClaim:
+            claimName: postgres-pvc
 
 ---
 apiVersion: v1

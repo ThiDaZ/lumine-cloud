@@ -27,6 +27,17 @@ spec:
             - name: KC_PROXY
               value: "edge"
 
+            - name: KC_DB
+              value: postgres
+            - name: KC_DB_URL
+              value: jdbc:postgresql://postgres:5432/keycloak
+            - name: KC_DB_USERNAME
+              value: admin
+            - name: KC_DB_PASSWORD
+              value: password
+            - name: KC_HOSTNAME_STRICT
+              value: "false" # Helps prevent redirect loops in dev
+
 ---
 apiVersion: v1
 kind: Service
