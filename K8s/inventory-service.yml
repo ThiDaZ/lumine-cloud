@@ -31,6 +31,8 @@ spec:
               value: http://zipkin:9411/api/v2/spans
             - name: EUREKA_INSTANCE_PREFER_IP_ADDRESS
               value: "true"
+            - name: MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE
+              value: "prometheus,health,info,metrics"
 
 ---
 apiVersion: v1

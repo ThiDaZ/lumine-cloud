@@ -17,6 +17,7 @@ public class SecurityConfig {
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .authorizeExchange(exchange -> exchange
                         .pathMatchers("/eureka/**").permitAll() // allow eurek dashboard
+                        .pathMatchers("/actuator/**").permitAll() // allow actuator endpoints
                         .anyExchange().authenticated()) // lock everything else
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()));
 

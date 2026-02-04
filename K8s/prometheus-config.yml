@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-config
+data:
+  prometheus.yml: |
+    global:
+      scrape_interval: 5s # Scrape often (for demo purposes)
+
+    scrape_configs:
+      # 1. Scrape the Apps
+      - job_name: 'lumine-services'
+        metrics_path: '/actuator/prometheus'
+        static_configs:
+          - targets: ['api-gateway:8080', 'product-service:8081', 'inventory-service:8082', 'order-service:8083', 'notification-service:8084']
