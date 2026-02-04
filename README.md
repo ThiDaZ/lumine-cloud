@@ -60,27 +60,27 @@ The system follows a domain-driven microservices architecture. Services communic
     ```
 
 3.  **Deploy to Kubernetes**
-    Apply the manifest files from the `k8s/` directory.
+    Apply the manifest files from the `K8s/` directory.
     ```bash
     # 1. infrastructure (Databases, Kafka, Keycloak, Observability)
-    kubectl apply -f k8s/pvc.yml
-    kubectl apply -f k8s/postgres.yml
-    kubectl apply -f k8s/mongodb.yml
-    kubectl apply -f k8s/kafka.yml
-    kubectl apply -f k8s/keycloak.yml
-    kubectl apply -f k8s/zipkin.yml
-    kubectl apply -f k8s/loki.yml
-    kubectl apply -f k8s/promtail.yml
-    kubectl apply -f k8s/prometheus.yml
-    kubectl apply -f k8s/grafana.yml
+    kubectl apply -f K8s/pvc.yml
+    kubectl apply -f K8s/postgres.yml
+    kubectl apply -f K8s/mongodb.yml
+    kubectl apply -f K8s/kafka.yml
+    kubectl apply -f K8s/keycloak.yml
+    kubectl apply -f K8s/zipkin.yml
+    kubectl apply -f K8s/loki.yml
+    kubectl apply -f K8s/promtail.yml
+    kubectl apply -f K8s/prometheus.yml
+    kubectl apply -f K8s/grafana.yml
 
     # 2. microservices
-    kubectl apply -f k8s/discovery-service.yml
-    kubectl apply -f k8s/api-gateway.yml
-    kubectl apply -f k8s/product-service.yml
-    kubectl apply -f k8s/order-service.yml
-    kubectl apply -f k8s/inventory-service.yml
-    kubectl apply -f k8s/notification-service.yml
+    kubectl apply -f K8s/discovery-service.yml
+    kubectl apply -f K8s/api-gateway.yml
+    kubectl apply -f K8s/product-service.yml
+    kubectl apply -f K8s/order-service.yml
+    kubectl apply -f K8s/inventory-service.yml
+    kubectl apply -f K8s/notification-service.yml
     ```
 
 4.  **Verify Deployment**
