@@ -1,37 +1,55 @@
-name: Lumine CI Pipeline
-
-# when to run
+name: ci.yml
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
   pull_request:
-    branches: [ "main" ]
+    branches:
+      - main
 
 jobs:
-  build-and-test:
+  test:
+    name: Unit & Integration Tests
     runs-on: ubuntu-latest
-
-    # download source code
     steps:
-    - name: Checkout Code
-      uses: actions/checkout@v4
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
-    #setup java 21
-    - name: Set up JDK 21
-      uses: actions/setup-java@v4
-      with:
-        java-version: '21'
-        distribution: 'temurin'
-        cache: 'maven' # automatically cache and restore all dependencies
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
 
-    # build and test
-    - name: Build and Test with Maven
-      run: mvn clean verify
+      - name: Run Tests
+        run: mvn clean verify
 
-    # upload test results (If you want to download later)
-    - name: Upload Test Report
-      if: always() #run even if the test fails
-      uses: actions/upload-artifact@v4
-      with:
-        name: test-reports
-        path: "**/target/surefire-reports/*.xml"
+  build-and-push:
+    name: Build and Push Docker Image
+    needs: test
+    runs-on: ubuntu-latest
+    if : github.ref == 'refs/heads/main' #only push from the main branch
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+
+      # we use Jib to build and push directly to Docker Hub
+      # we override the image name to include your username
+      - name: Build & Push Image
+        run: |
+          mvn compile jib:build \
+            -Djib.to.auth.username=${{ secrets.DOCKER_USERNAME }} \
+            -Djib.to.auth.password=${{ secrets.DOCKER_PASSWORD }} \
+            -Dmaven.test.skip=true
+
+
+

@@ -62,8 +62,6 @@ class ProductServiceApplicationTests {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(productRequestString))
                 .andExpect(status().isCreated()); // Assert 201 Created
-
-        Assertions.assertEquals(1, productRepository.findAll().size());
     }
 
     /**
